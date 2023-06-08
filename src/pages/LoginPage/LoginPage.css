@@ -91,10 +91,22 @@ h3 {
   cursor: pointer;
 }
 
+.button-group .login-link {
+  height: 40px;
+  width: 45%;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  background-color: #ffffff;
+
+  text-align: center;
+}
+
 .button-group button[type="submit"] {
   background-color: #00a0ff;
 }
 
 .button-group button[type="button"] {
   background-color: #ffffff;
+  width: 100%;
 }

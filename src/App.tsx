@@ -16,7 +16,7 @@ function App() {
   const user = useAuthStore((state) => state.user);
   return (
     <div className="App">
-      <Navbar />
+      {user && <Navbar />}
       <Routes>
         <Route
           path="/"
@@ -27,10 +27,22 @@ function App() {
           element={!user ? <LoginPage /> : <Navigate to="/" />}
         />
         <Route path="/registration" element={<RegistrationPage />} />
-        <Route path="/events/:id" element={<EventRegistrationPage />} />
-        <Route path="/create-event" element={<CreateEvent />} />
-        <Route path="/dashboard" element={<Dashboard />} />
-        <Route path="/scan-qr" element={<ScanQR />} />
+        <Route
+          path="/events/:id"
+          element={user ? <EventRegistrationPage /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/create-event"
+          element={user ? <CreateEvent /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/dashboard"
+          element={user ? <Dashboard /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/scan-qr"
+          element={user ? <ScanQR /> : <Navigate to="/login" />}
+        />
       </Routes>
       <ToastContainer />
     </div>

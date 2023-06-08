@@ -96,7 +96,11 @@ const LoginPage = () => {
             <button type="submit" onClick={handleLogin}>
               Log In
             </button>
-            <Link to="/registration">
+            <Link
+              to="/registration"
+              className="login-link"
+              style={{ textDecoration: "none" }}
+            >
               <button type="button">Sign Up</button>
             </Link>
           </div>

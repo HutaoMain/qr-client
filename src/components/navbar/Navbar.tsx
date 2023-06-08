@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./Navbar.css";
 // import { useQuery } from "react-query";
-// import useAuthStore from "../../zustand/AuthStore";
+import useAuthStore from "../../zustand/AuthStore";
 // import { userInterface } from "../../types/Types";
 
 const Navbar = () => {
@@ -16,6 +16,8 @@ const Navbar = () => {
   //       (res) => res.json()
   //     ),
   // });
+
+  const clearUser = useAuthStore((state) => state.clearUser);
 
   return (
     <nav className="navbar">
@@ -46,11 +48,9 @@ const Navbar = () => {
             </a>
           </li>
           {/* )} */}
-          {/* <li className="nav-item">
-            <a href="/profile" className="nav-link">
-              Profile
-            </a>
-          </li> */}
+          <li className="nav-item">
+            <span onClick={clearUser}>Logout</span>
+          </li>
         </ul>
         <div className="burger" onClick={() => setOpen(!open)}>
           <div className="line1"></div>

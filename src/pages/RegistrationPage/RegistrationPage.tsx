@@ -3,6 +3,7 @@ import "./RegistrationPage.css";
 import { registrationInterface } from "../../types/Types";
 import axios from "axios";
 import { toast } from "react-toastify";
+import { Link, useNavigate } from "react-router-dom";
 
 const RegistrationPage = () => {
   const [registrationInfo, setRegistrationInfo] =
@@ -28,6 +29,8 @@ const RegistrationPage = () => {
     }));
   };
 
+  const navigate = useNavigate();
+
   const handleSubmit = async (event: any) => {
     event.preventDefault();
 
@@ -45,6 +48,9 @@ const RegistrationPage = () => {
         draggable: true,
         progress: undefined,
       });
+      setTimeout(() => {
+        navigate("/login");
+      }, 2000);
     } catch (err) {
       console.log(err);
     }
@@ -161,7 +167,13 @@ const RegistrationPage = () => {
             <button type="submit" onClick={handleSubmit}>
               Register
             </button>
-            <button type="button">Cancel</button>
+            <Link
+              to="/login"
+              className="registration-link"
+              style={{ textDecoration: "none" }}
+            >
+              <button type="button">Cancel</button>
+            </Link>
           </div>
         </form>
       </div>

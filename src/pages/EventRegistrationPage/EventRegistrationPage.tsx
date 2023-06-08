@@ -66,7 +66,7 @@ const EventRegistrationPage = () => {
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     if (activeTab === 1) {
-      const response = await axios.post(
+      await axios.post(
         `${import.meta.env.VITE_APP_API_URL}/api/attendee/create`,
         {
           eventName: data?.eventName,
@@ -81,7 +81,7 @@ const EventRegistrationPage = () => {
           email: userInfo?.email,
         }
       );
-      setQRCode(response.data);
+      setQRCode(userInfo?._id || "");
       // toast("Successful Confirming Event!", {
       //   type: "success",
       //   position: "bottom-right",
@@ -95,7 +95,7 @@ const EventRegistrationPage = () => {
       //   navigate("/");
       // }, 2000);
     } else if (activeTab === 2) {
-      const response = await axios.post(
+      await axios.post(
         `${import.meta.env.VITE_APP_API_URL}/api/attendee/create`,
         {
           eventName: data?.eventName,
@@ -106,7 +106,7 @@ const EventRegistrationPage = () => {
           ...parentInfo,
         }
       );
-      setQRCode(response.data);
+      setQRCode(userInfo?._id || "");
       // toast("Successful Confirming Event!", {
       //   type: "success",
       //   position: "bottom-right",
