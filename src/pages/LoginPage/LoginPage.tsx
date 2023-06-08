@@ -5,7 +5,7 @@ import React, { useState } from "react";
 import { loginInterface } from "../../types/Types";
 import useAuthStore from "../../zustand/AuthStore";
 // import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
   const setUser = useAuthStore((state) => state.setUser);
@@ -96,7 +96,9 @@ const LoginPage = () => {
             <button type="submit" onClick={handleLogin}>
               Log In
             </button>
-            <button type="button">Sign Up</button>
+            <Link to="/registration">
+              <button type="button">Sign Up</button>
+            </Link>
           </div>
         </form>
       </div>
