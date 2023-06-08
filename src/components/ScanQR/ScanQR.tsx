@@ -20,6 +20,11 @@ const ScanQR = () => {
         onScan={handleScan}
         style={{ height: 240, width: 320 }}
       />
+      {qrCode && (
+        <>
+          <span>{qrCode}</span>
+        </>
+      )}
     </>
   );
 };

@@ -1,21 +1,21 @@
 import { useState } from "react";
 import "./Navbar.css";
-import { useQuery } from "react-query";
-import useAuthStore from "../../zustand/AuthStore";
-import { userInterface } from "../../types/Types";
+// import { useQuery } from "react-query";
+// import useAuthStore from "../../zustand/AuthStore";
+// import { userInterface } from "../../types/Types";
 
 const Navbar = () => {
   const [open, setOpen] = useState<boolean>(false);
 
-  const user = useAuthStore((state) => state.user);
+  // const user = useAuthStore((state) => state.user);
 
-  const { data } = useQuery<userInterface>({
-    queryKey: ["navbar"],
-    queryFn: () =>
-      fetch(`${import.meta.env.VITE_APP_API_URL}/api/user/${user}`).then(
-        (res) => res.json()
-      ),
-  });
+  // const { data } = useQuery<userInterface>({
+  //   queryKey: ["navbar"],
+  //   queryFn: () =>
+  //     fetch(`${import.meta.env.VITE_APP_API_URL}/api/user/${user}`).then(
+  //       (res) => res.json()
+  //     ),
+  // });
 
   return (
     <nav className="navbar">
@@ -38,6 +38,11 @@ const Navbar = () => {
           <li className="nav-item">
             <a href="/create-event" className="nav-link">
               Create Event
+            </a>
+          </li>
+          <li className="nav-item">
+            <a href="/scan-qr" className="nav-link">
+              Scan QR
             </a>
           </li>
           {/* )} */}

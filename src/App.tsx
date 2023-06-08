@@ -10,6 +10,7 @@ import EventPage from "./pages/EventPage/EventPage";
 import EventRegistrationPage from "./pages/EventRegistrationPage/EventRegistrationPage";
 import CreateEvent from "./components/CreateEvent/CreateEvent";
 import Dashboard from "./pages/Dashboard/Dashboard";
+import ScanQR from "./components/ScanQR/ScanQR";
 
 function App() {
   const user = useAuthStore((state) => state.user);
@@ -29,6 +30,7 @@ function App() {
         <Route path="/events/:id" element={<EventRegistrationPage />} />
         <Route path="/create-event" element={<CreateEvent />} />
         <Route path="/dashboard" element={<Dashboard />} />
+        <Route path="/scan-qr" element={<ScanQR />} />
       </Routes>
       <ToastContainer />
     </div>
