@@ -1,0 +1,98 @@
+/* Navbar.css */
+
+.navbar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #333;
+  color: white;
+  width: 100%;
+}
+
+.navbar-container {
+  max-width: 1240px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar-brand {
+  margin-left: 20px;
+}
+
+.nav-links {
+  list-style: none;
+  display: flex;
+}
+
+.nav-item {
+  margin-right: 20px;
+}
+
+.nav-link {
+  color: white;
+  text-decoration: none;
+}
+
+.burger {
+  display: none;
+}
+
+@media screen and (max-width: 768px) {
+  .nav-links {
+    position: absolute;
+    right: 0px;
+    height: 92vh;
+    top: 8vh;
+    background-color: #333;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 30%;
+    transform: translateX(100%);
+    transition: transform 0.5s ease-in;
+  }
+
+  .nav-links.open {
+    transform: translateX(0%);
+    z-index: 999;
+  }
+
+  .nav-item {
+    margin-top: 30px;
+    margin-right: 0px;
+  }
+
+  .burger {
+    display: block;
+    cursor: pointer;
+    margin-right: 20px;
+  }
+
+  .line1,
+  .line2,
+  .line3 {
+    width: 25px;
+    height: 3px;
+    background-color: white;
+    margin: 5px;
+    transition: all 0.3s ease-in-out;
+  }
+
+  .burger.open .line1 {
+    transform-origin: top left;
+    transform: rotate(45deg) translate(7px, -1px);
+  }
+
+  .burger.open .line2 {
+    opacity: 0;
+    transform-origin: top left;
+    transform: rotate(45deg) translate(-5px, -4px);
+  }
+
+  .burger.open .line3 {
+    transform-origin: bottom left;
+    transform: rotate(-45deg) translate(7px, -1px);
+  }
+}

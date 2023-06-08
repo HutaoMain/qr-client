@@ -1,0 +1,18 @@
+.event {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  align-content: center;
+  justify-content: center;
+}
+
+.event-container {
+  border: 1px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 5px;
+  width: 200px;
+  height: 200px;
+}

@@ -7,13 +7,13 @@ interface AuthStore {
 }
 
 export const useAuthStore = create<AuthStore>((set) => ({
-  user: localStorage.getItem("groceryUser") || null,
+  user: localStorage.getItem("school-event-user") || null,
   setUser: (user) => {
-    localStorage.setItem("groceryUser", user);
+    localStorage.setItem("school-event-user", user);
     set({ user });
   },
   clearUser: () => {
-    localStorage.removeItem("groceryUser");
+    localStorage.removeItem("school-event-user");
     set({ user: null });
   },
 }));

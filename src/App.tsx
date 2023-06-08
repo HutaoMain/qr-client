@@ -1,17 +1,36 @@
 import "./App.css";
-import { Routes, Route } from "react-router-dom";
-import HomePage from "./pages/HomePage/HomePage";
+import { Routes, Route, Navigate } from "react-router-dom";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import RegistrationPage from "./pages/RegistrationPage/RegistrationPage";
+import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer } from "react-toastify";
+import useAuthStore from "./zustand/AuthStore";
+import Navbar from "./components/navbar/Navbar";
+import EventPage from "./pages/EventPage/EventPage";
+import EventRegistrationPage from "./pages/EventRegistrationPage/EventRegistrationPage";
+import CreateEvent from "./components/CreateEvent/CreateEvent";
+import Dashboard from "./pages/Dashboard/Dashboard";
 
 function App() {
+  const user = useAuthStore((state) => state.user);
   return (
     <div className="App">
+      <Navbar />
       <Routes>
-        <Route path="/" element={<HomePage />} />
-        <Route path="/login" element={<LoginPage />} />
+        <Route
+          path="/"
+          element={user ? <EventPage /> : <Navigate to="/login" />}
+        />
+        <Route
+          path="/login"
+          element={!user ? <LoginPage /> : <Navigate to="/" />}
+        />
         <Route path="/registration" element={<RegistrationPage />} />
+        <Route path="/events/:id" element={<EventRegistrationPage />} />
+        <Route path="/create-event" element={<CreateEvent />} />
+        <Route path="/dashboard" element={<Dashboard />} />
       </Routes>
+      <ToastContainer />
     </div>
   );
 }

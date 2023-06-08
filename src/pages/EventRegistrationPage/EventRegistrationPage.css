@@ -1,16 +1,40 @@
+.event-registration-page {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+  margin-top: 10px;
+}
+
+.event-registration-btns {
+  max-width: 1240px;
+}
+
 .form-container {
   width: 100%;
-  display: grid;
-  align-content: center;
-  justify-content: center;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form-container-itemlist {
+  width: 100%;
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 3px;
 }
 
 .tab-input {
-  width: 300px;
+  width: 330px;
   height: 20px;
   padding: 8px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  padding-left: 10px;
 }
 
 .form-container label {

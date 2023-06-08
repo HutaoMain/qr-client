@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "./RegistrationPage.css";
 import { registrationInterface } from "../../types/Types";
 import axios from "axios";
+import { toast } from "react-toastify";
 
 const RegistrationPage = () => {
   const [registrationInfo, setRegistrationInfo] =
@@ -10,6 +11,7 @@ const RegistrationPage = () => {
       lastName: "",
       firstName: "",
       middleName: "",
+      idNumber: "",
       course: "",
       yearLevel: "",
       email: "",
@@ -34,6 +36,15 @@ const RegistrationPage = () => {
         `${import.meta.env.VITE_APP_API_URL}/api/user/register`,
         registrationInfo
       );
+      toast("Successful Registration!", {
+        type: "success",
+        position: "bottom-right",
+        autoClose: 2000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        draggable: true,
+        progress: undefined,
+      });
     } catch (err) {
       console.log(err);
     }
@@ -79,6 +90,16 @@ const RegistrationPage = () => {
               name="middleName"
               placeholder="Enter your middle name"
               value={registrationInfo.middleName}
+              onChange={onChangeHandler}
+            />
+          </div>
+          <div className="registration-input-group">
+            <label htmlFor="idNumber">ID Number</label>
+            <input
+              type="text"
+              name="idNumber"
+              placeholder="Enter your ID Number"
+              value={registrationInfo.idNumber}
               onChange={onChangeHandler}
             />
           </div>

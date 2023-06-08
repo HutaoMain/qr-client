@@ -1,0 +1,18 @@
+.dashboard {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.data-grid {
+  width: 1240px;
+  height: 70vh;
+  margin-top: 20px;
+}
+
+@media screen and (max-width: 500px) {
+  .data-grid {
+    width: 90%;
+  }
+}

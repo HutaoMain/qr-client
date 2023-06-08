@@ -1,17 +1,10 @@
-import React, { useState } from "react";
-import { registrationInterface } from "../../types/Types";
+import { useState } from "react";
+// import { registrationInterface } from "../../types/Types";
 import axios from "axios";
 import QRCode from "qrcode.react";
 import QrScan from "react-qr-reader";
 
 const Registration = () => {
-  const [registrationInfo, setRegistrationInfo] =
-    useState<registrationInterface>({
-      firstName: "",
-      lastName: "",
-      status: "Pre-registered",
-    });
-
   const [qrCode, setQRCode] = useState<string>("");
 
   const handleScan = (data: any) => {
@@ -23,15 +16,12 @@ const Registration = () => {
     console.error(err);
   };
 
-  const onChangeHandler = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { value, name } = event.target;
-
-    setRegistrationInfo((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+  const onChangeHandler = () => {
+    // const { value, name } = event.target;
+    // setRegistrationInfo((prevState) => ({
+    //   ...prevState,
+    //   [name]: value,
+    // }));
   };
 
   const handleSubmit = async (e: any) => {
@@ -39,9 +29,7 @@ const Registration = () => {
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_APP_API_URL}/api/user/register`,
-        {
-          ...registrationInfo,
-        }
+        {}
       );
       setQRCode(response.data);
     } catch (error) {
@@ -68,14 +56,14 @@ const Registration = () => {
           type="text"
           placeholder="First Name"
           name="firstName"
-          value={registrationInfo.firstName}
+          // value={registrationInfo.firstName}
           onChange={onChangeHandler}
         />
         <input
           type="text"
           placeholder="Last Name"
           name="lastName"
-          value={registrationInfo.lastName}
+          // value={registrationInfo.lastName}
           onChange={onChangeHandler}
         />
         <select name="status" onChange={onChangeHandler}>

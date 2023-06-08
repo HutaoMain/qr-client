@@ -3,12 +3,21 @@ import Logo from "../../assets/logo.png";
 import axios from "axios";
 import React, { useState } from "react";
 import { loginInterface } from "../../types/Types";
+import useAuthStore from "../../zustand/AuthStore";
+// import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 const LoginPage = () => {
+  const setUser = useAuthStore((state) => state.setUser);
+
+  const navigate = useNavigate();
+
   const [credentials, setCredentials] = useState<loginInterface>({
     email: "",
     password: "",
   });
+
+  const [errors, setErrors] = useState<string>("");
 
   const onChangeHandler = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -26,12 +35,25 @@ const LoginPage = () => {
         `${import.meta.env.VITE_APP_API_URL}/api/user/login`,
         credentials
       );
-
-      console.log("success");
+      // toast("Successful Login!", {
+      //   type: "success",
+      //   position: "bottom-right",
+      //   autoClose: 2000,
+      //   hideProgressBar: false,
+      //   closeOnClick: true,
+      //   draggable: true,
+      //   progress: undefined,
+      // });
+      // setTimeout(() => {
+      setUser(credentials.email);
+      navigate("/");
+      // }, 2000);
     } catch (err) {
       console.log(err);
+      setErrors("Incorrect email or password.");
     }
   };
+
   return (
     <div className="login-container">
       <section className="login-header">
@@ -65,6 +87,11 @@ const LoginPage = () => {
               onChange={onChangeHandler}
             />
           </div>
+          {errors && (
+            <div style={{ padding: "5px 0" }}>
+              <span style={{ color: "red" }}>{errors}</span>
+            </div>
+          )}
           <div className="button-group">
             <button type="submit" onClick={handleLogin}>
               Log In
