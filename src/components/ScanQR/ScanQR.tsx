@@ -1,9 +1,10 @@
-import React, { useRef, useState } from "react";
-// import QrScan from "react-qr-reader";
+import React, { useEffect, useRef, useState } from "react";
+import QrScan from "react-qr-reader";
 import QrScanner from "qr-scanner";
+import axios from "axios";
 
 const ScanQR = () => {
-  // const [qrCode, setQRCode] = useState<string>("");
+  const [qrCode, setQRCode] = useState<string>("");
   const [qrFile, setQrFile] = useState<File | undefined>(undefined);
   const [data, setData] = useState("");
 
@@ -23,15 +24,37 @@ const ScanQR = () => {
     }
   };
 
-  // const handleScan = (data: any) => {
-  //   if (data) {
-  //     setQRCode(data);
-  //   }
-  // };
+  const updateStatus = async (id: string) => {
+    try {
+      await axios.put(
+        `${import.meta.env.VITE_APP_API_URL}/api/attendee/update/${id}`,
+        {
+          status: "Attended",
+        }
+      );
+      console.log("Status updated successfully");
+    } catch (error) {
+      console.error("Failed to update status:", error);
+    }
+  };
 
-  // const handleError = (err: any) => {
-  //   console.error(err);
-  // };
+  console.log(data);
+
+  useEffect(() => {
+    if (data) {
+      updateStatus(data);
+    }
+  }, [data]);
+
+  const handleScan = (data: any) => {
+    if (data) {
+      setQRCode(data);
+    }
+  };
+
+  const handleError = (err: any) => {
+    console.error(err);
+  };
 
   return (
     <div
@@ -44,8 +67,17 @@ const ScanQR = () => {
         marginTop: "10px",
       }}
     >
-      <div style={{ maxWidth: "1240px" }}>
-        <button onClick={handleClick}>Scan QRCode</button>
+      <div
+        style={{
+          maxWidth: "1240px",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          flexDirection: "column",
+        }}
+      >
+        <h1>Scan your QR Code</h1>
+        <button onClick={handleClick}>Click to upload QR Code</button>
         <input
           type="file"
           accept="image/*"
@@ -53,16 +85,16 @@ const ScanQR = () => {
           ref={fileRef}
           style={{ display: "none" }}
         />
-        {
-          qrFile && <span>{data}</span>
-          // : (
-          // <QrScan
-          //   delay={300}
-          //   onError={handleError}
-          //   onScan={handleScan}
-          //   style={{ height: 240, width: 320 }}
-          // />
-        }
+        {qrFile && <span>{data}</span>}
+        or
+        {!qrFile && (
+          <QrScan
+            delay={300}
+            onError={handleError}
+            onScan={handleScan}
+            style={{ height: 240, width: 320 }}
+          />
+        )}
       </div>
     </div>
   );

@@ -11,6 +11,21 @@ import axios from "axios";
 import "./EventRegistrationPage.css";
 import dayjs from "dayjs";
 import QRCode from "qrcode.react";
+import Modal from "react-modal";
+
+const customStyles = {
+  content: {
+    top: "50%",
+    left: "50%",
+    right: "auto",
+    bottom: "auto",
+    marginRight: "-50%",
+    transform: "translate(-50%, -50%)",
+    padding: "20px",
+  },
+};
+
+Modal.setAppElement("#root");
 
 const EventRegistrationPage = () => {
   const location = useLocation();
@@ -31,6 +46,8 @@ const EventRegistrationPage = () => {
   };
 
   const [qrCode, setQRCode] = useState<string>("");
+
+  const [modalIsOpen, setModalIsOpen] = useState<boolean>(false);
 
   const user = useAuthStore((state) => state.user);
 
@@ -61,12 +78,10 @@ const EventRegistrationPage = () => {
     }));
   };
 
-  // const navigate = useNavigate();
-
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     if (activeTab === 1) {
-      await axios.post(
+      const res = await axios.post(
         `${import.meta.env.VITE_APP_API_URL}/api/attendee/create`,
         {
           eventName: data?.eventName,
@@ -81,21 +96,18 @@ const EventRegistrationPage = () => {
           email: userInfo?.email,
         }
       );
-      setQRCode(userInfo?._id || "");
-      // toast("Successful Confirming Event!", {
-      //   type: "success",
-      //   position: "bottom-right",
-      //   autoClose: 2000,
-      //   hideProgressBar: false,
-      //   closeOnClick: true,
-      //   draggable: true,
-      //   progress: undefined,
-      // });
-      // setTimeout(() => {
-      //   navigate("/");
-      // }, 2000);
-    } else if (activeTab === 2) {
+
       await axios.post(
+        `${import.meta.env.VITE_APP_API_URL}/api/attendee/sms/create`,
+        {
+          phoneNumber: "+69554376617",
+        }
+      );
+
+      setQRCode(res.data._id);
+      toggleModalOpen();
+    } else if (activeTab === 2) {
+      const res = await axios.post(
         `${import.meta.env.VITE_APP_API_URL}/api/attendee/create`,
         {
           eventName: data?.eventName,
@@ -106,19 +118,8 @@ const EventRegistrationPage = () => {
           ...parentInfo,
         }
       );
-      setQRCode(userInfo?._id || "");
-      // toast("Successful Confirming Event!", {
-      //   type: "success",
-      //   position: "bottom-right",
-      //   autoClose: 2000,
-      //   hideProgressBar: false,
-      //   closeOnClick: true,
-      //   draggable: true,
-      //   progress: undefined,
-      // });
-      // setTimeout(() => {
-      //   navigate("/");
-      // }, 2000);
+      setQRCode(res.data._id);
+      toggleModalOpen();
     }
   };
 
@@ -253,6 +254,10 @@ const EventRegistrationPage = () => {
     }
   };
 
+  const toggleModalOpen = () => {
+    setModalIsOpen(!modalIsOpen);
+  };
+
   return (
     <div className="event-registration-page">
       <div className="event-registration-btns">
@@ -270,13 +275,27 @@ const EventRegistrationPage = () => {
         </button>
       </div>
       {data && userInfo ? <>{renderFormInputs()}</> : "loading"}
-      {qrCode && (
-        <div>
-          <h3>Your QR Code:</h3>
-          <QRCode id="qrcode-canvas" value={qrCode} renderAs="canvas" />
-          <button onClick={handleDownloadQRCode}>Download QR Code</button>
-        </div>
-      )}
+      <Modal
+        isOpen={modalIsOpen}
+        onRequestClose={toggleModalOpen}
+        style={customStyles}
+      >
+        {qrCode && (
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              flexDirection: "column",
+              gap: "10px",
+            }}
+          >
+            <h3>Your QR Code:</h3>
+            <QRCode id="qrcode-canvas" value={qrCode} renderAs="canvas" />
+            <button onClick={handleDownloadQRCode}>Download QR Code</button>
+          </div>
+        )}
+      </Modal>
     </div>
   );
 };

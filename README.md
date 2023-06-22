@@ -1,6 +1,6 @@
 # react-qr-client
 
-scan qr code, a
+scan qr code
 send textmessage
 update the status
 react modal in qr code
