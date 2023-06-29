@@ -97,12 +97,12 @@ const EventRegistrationPage = () => {
         }
       );
 
-      await axios.post(
-        `${import.meta.env.VITE_APP_API_URL}/api/attendee/sms/create`,
-        {
-          phoneNumber: "+69554376617",
-        }
-      );
+      // await axios.post(
+      //   `${import.meta.env.VITE_APP_API_URL}/api/attendee/sms/create`,
+      //   {
+      //     phoneNumber: "+69554376617",
+      //   }
+      // );
 
       setQRCode(res.data._id);
       toggleModalOpen();

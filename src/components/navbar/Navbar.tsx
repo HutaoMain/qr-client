@@ -51,7 +51,9 @@ const Navbar = () => {
             </a>
           </li>
           <li className="nav-item">
-            <span onClick={clearUser}>Logout</span>
+            <span style={{ cursor: "pointer" }} onClick={clearUser}>
+              Logout
+            </span>
           </li>
         </ul>
         <div className="burger" onClick={() => setOpen(!open)}>

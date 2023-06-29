@@ -4,8 +4,11 @@ import "./Dashboard.css";
 import { DataGrid, GridColDef } from "@mui/x-data-grid";
 import { useQuery } from "react-query";
 import dayjs from "dayjs";
+import { useState } from "react";
 
 const Dashboard = () => {
+  const [selectedEvent, setSelectedEvent] = useState("");
+
   const { data } = useQuery<attendeesInterface[]>({
     queryKey: ["dashboard"],
     queryFn: () =>
@@ -13,6 +16,12 @@ const Dashboard = () => {
         .get(`${import.meta.env.VITE_APP_API_URL}/api/attendee/list`)
         .then((res) => res.data),
   });
+
+  const eventNames = [...new Set(data?.map((item) => item.eventName))];
+
+  const filteredData = selectedEvent
+    ? data?.filter((item) => item.eventName === selectedEvent)
+    : data;
 
   const productColumn: GridColDef[] = [
     {
@@ -101,13 +110,45 @@ const Dashboard = () => {
       align: "center",
       width: 300,
     },
+    {
+      field: "timeIn",
+      headerName: "Time In",
+      headerAlign: "center",
+      align: "center",
+      width: 300,
+    },
+    {
+      field: "timeOut",
+      headerName: "Time Out",
+      headerAlign: "center",
+      align: "center",
+      width: 300,
+    },
   ];
 
   return (
     <div className="dashboard">
       <section className="data-grid">
+        <div className="filter-container">
+          <label htmlFor="event-filter" className="filter-label">
+            Event Filter:
+          </label>
+          <select
+            id="event-filter"
+            value={selectedEvent}
+            onChange={(e) => setSelectedEvent(e.target.value)}
+            className="filter-select"
+          >
+            <option value="">All Events</option>
+            {eventNames.map((eventName) => (
+              <option key={eventName} value={eventName}>
+                {eventName}
+              </option>
+            ))}
+          </select>
+        </div>
         <DataGrid
-          rows={data ?? []}
+          rows={filteredData ?? []}
           columns={productColumn}
           getRowId={(row) => row._id}
         />

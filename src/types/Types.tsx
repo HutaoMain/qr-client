@@ -55,4 +55,6 @@ export interface attendeesInterface {
   attendeeCourse: string;
   attendeeRelationship: string;
   status: string;
+  timeIn: string;
+  timeOut: string;
 }

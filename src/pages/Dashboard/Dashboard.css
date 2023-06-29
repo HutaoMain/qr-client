@@ -11,6 +11,21 @@
   margin-top: 20px;
 }
 
+.filter-container {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.filter-label {
+  margin-right: 10px;
+}
+
+.filter-select {
+  width: 200px;
+  height: 30px;
+}
+
 @media screen and (max-width: 500px) {
   .data-grid {
     width: 90%;
