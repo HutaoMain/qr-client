@@ -57,4 +57,5 @@ export interface attendeesInterface {
   status: string;
   timeIn: string;
   timeOut: string;
+  phoneNumber: string;
 }

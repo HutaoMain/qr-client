@@ -1,20 +1,13 @@
-import React, { useEffect, useRef, useState } from "react";
-import QrScan from "react-qr-reader";
-import QrScanner from "qr-scanner";
+import { useEffect, useState } from "react";
+import { Html5QrcodeScanner } from "html5-qrcode";
 import axios from "axios";
 import { attendeesInterface } from "../../types/Types";
 import dayjs from "dayjs";
 import { toast } from "react-toastify";
 
 const ScanQR = () => {
-  const [qrCode, setQRCode] = useState<string>("");
-  const [qrFile, setQrFile] = useState<File | undefined>(undefined);
   const [eventId, setEventId] = useState("");
   const [attendeeInfo, setAttendeeInfo] = useState<attendeesInterface>();
-
-  const fileRef = useRef<HTMLInputElement>(null);
-
-  console.log(qrCode);
 
   useEffect(() => {
     if (eventId) {
@@ -30,17 +23,16 @@ const ScanQR = () => {
 
   console.log("eto attendee info", attendeeInfo);
 
-  const handleClick = () => {
-    fileRef.current?.click();
-  };
-
-  const handleChange = async (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    setQrFile(file);
-
-    if (file) {
-      const result = await QrScanner.scanImage(file);
-      setEventId(result);
+  const handleSendSMS = async (message: string) => {
+    try {
+      await axios.post(`${import.meta.env.VITE_APP_API_URL}/send-sms`, {
+        // phoneNumber: attendeeInfo?.phoneNumber,
+        phoneNumber: "+639669917664",
+        message: message,
+      });
+      console.log("success");
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -54,6 +46,13 @@ const ScanQR = () => {
             timeIn: dayjs().format("hh:mm A"),
           }
         );
+        await handleSendSMS(
+          `GSCI CEBU ADVISORY: ${(<br />)} This is to inform that ${
+            attendeeInfo.attendeeFirstName
+          } ${attendeeInfo.attendeeLastName}, has TIME-IN in ${
+            attendeeInfo.eventName
+          }. Time and Date: ${dayjs(new Date()).format("DD/MM/YYYY HH:mma")} `
+        );
         toast("Successful time in from the event!", {
           type: "success",
           position: "bottom-center",
@@ -63,9 +62,6 @@ const ScanQR = () => {
           draggable: true,
           progress: undefined,
         });
-        // setTimeout(() => {
-        //   window.location.reload();
-        // }, 2000);
       } else if (attendeeInfo?.status.trim() === "Attended") {
         await axios.put(
           `${import.meta.env.VITE_APP_API_URL}/api/attendee/update/${id}`,
@@ -73,31 +69,27 @@ const ScanQR = () => {
             timeOut: dayjs().format("hh:mm A"),
           }
         );
+        await handleSendSMS(
+          `GSCI CEBU ADVISORY: ${(<br />)} This is to inform that ${
+            attendeeInfo.attendeeFirstName
+          } ${attendeeInfo.attendeeLastName}, has TIME-OUT in ${
+            attendeeInfo.eventName
+          }. Time and Date: ${dayjs(new Date()).format("DD/MM/YYYY HH:mma")} `
+        );
         toast("Successful time out from the event!", {
           type: "success",
-          position: "bottom-center",
+          position: "top-center",
           autoClose: 2000,
           hideProgressBar: false,
           closeOnClick: true,
           draggable: true,
           progress: undefined,
         });
-        // setTimeout(() => {
-        //   window.location.reload();
-        // }, 2000);
       }
     } catch (error) {
       console.error("Failed to update status:", error);
     }
   };
-
-  console.log(eventId);
-
-  // useEffect(() => {
-  //   if (eventId) {
-  //     updateStatus(eventId);
-  //   }
-  // }, [eventId]);
 
   const handleSubmit = () => {
     if (eventId) {
@@ -106,22 +98,45 @@ const ScanQR = () => {
   };
 
   const handleScan = (data: any) => {
-    if (data) {
-      setQRCode(data);
-    }
+    console.log(data);
+    // setEventId(data);
   };
 
   const handleError = (err: any) => {
     console.error(err);
   };
 
+  useEffect(() => {
+    // create a configuration object for Html5QrcodeScanner
+    const config = {
+      fps: 10,
+      qrbox: 250,
+      aspectRatio: 1,
+      disableFlip: false,
+    };
+    // create a new instance of Html5QrcodeScanner
+    const html5QrcodeScanner = new Html5QrcodeScanner(
+      "qr-code-scanner",
+      config,
+      false
+    );
+    // render the scanner with the callbacks
+    html5QrcodeScanner.render(handleScan, handleError);
+    // clear the scanner when the component unmounts
+    return () => {
+      html5QrcodeScanner.clear().catch((error) => {
+        console.error("Failed to clear html5QrcodeScanner.", error);
+      });
+    };
+  }, []);
+
+  console.log();
   return (
     <div
       style={{
         width: "100%",
         display: "flex",
         alignItems: "center",
-        justifyContent: "center",
         flexDirection: "column",
         marginTop: "10px",
       }}
@@ -136,29 +151,13 @@ const ScanQR = () => {
         }}
       >
         <h1>Scan your QR Code</h1>
-        {eventId ? (
-          <>
-            <button onClick={handleSubmit}>Submit QR Code</button>
-          </>
-        ) : (
-          <button onClick={handleClick}>Click to upload QR Code</button>
-        )}
-        <input
-          type="file"
-          accept="image/*"
-          onChange={handleChange}
-          ref={fileRef}
-          style={{ display: "none" }}
-        />
-        {qrFile && <span>{eventId}</span>}
-        {!eventId && <span>or</span>}
-        {!qrFile && (
-          <QrScan
-            delay={300}
-            onError={handleError}
-            onScan={handleScan}
-            style={{ height: 240, width: 320 }}
-          />
+        <p>To upload your QR code, select "Scan an image file".</p>
+        <div id="qr-code-scanner" />
+
+        {eventId && (
+          <button style={{ marginTop: "10px" }} onClick={handleSubmit}>
+            Submit QR Code
+          </button>
         )}
       </div>
     </div>

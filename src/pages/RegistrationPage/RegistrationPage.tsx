@@ -60,12 +60,8 @@ const RegistrationPage = () => {
 
   return (
     <div className="registration-container">
-      <section className="registration-header">
-        <h1>Register</h1>
-        {/* <h3>Create your Account</h3> */}
-      </section>
       <div className="registration-title">
-        <h1>Please enter your details</h1>
+        <h1>Please enter the student details</h1>
       </div>
       <div className="registration-form">
         <form>

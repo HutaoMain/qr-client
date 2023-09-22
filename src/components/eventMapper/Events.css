@@ -1,9 +1,10 @@
 .event {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  gap: 10px;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
   align-content: center;
   justify-content: center;
+  max-width: 1240px;
 }
 
 .event-container {
@@ -29,4 +30,12 @@
 
 .event-header {
   padding: 10px;
+}
+
+@media screen and (max-width: 400px) {
+  .event {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+  }
 }

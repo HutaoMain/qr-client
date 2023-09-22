@@ -43,6 +43,11 @@ const Navbar = () => {
                   Create Event
                 </a>
               </li>
+              <li className="nav-item">
+                <a href="/registration" className="nav-link">
+                  Registration
+                </a>
+              </li>
             </>
           )}
           <li className="nav-item">

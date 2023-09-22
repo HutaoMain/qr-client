@@ -33,7 +33,7 @@ const EventRegistrationPage = () => {
 
   const [userInfo, setUserInfo] = useState<userInterface>();
   const [activeTab, setActiveTab] = useState(1);
-
+  const [phoneNumber, setPhoneNumber] = useState<string>("");
   const [parentInfo, setParentInfo] = useState<parentInfoInterface>({
     attendeeFirstName: "",
     attendeeMiddleName: "",
@@ -80,6 +80,11 @@ const EventRegistrationPage = () => {
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
+
+    if (phoneNumber === "") {
+      return alert("Put phone number");
+    }
+
     if (activeTab === 1) {
       const res = await axios.post(
         `${import.meta.env.VITE_APP_API_URL}/api/attendee/create`,
@@ -94,15 +99,9 @@ const EventRegistrationPage = () => {
           attendeeYearLevel: userInfo?.yearLevel,
           attendeeCourse: userInfo?.course,
           email: userInfo?.email,
+          phoneNumber: phoneNumber,
         }
       );
-
-      // await axios.post(
-      //   `${import.meta.env.VITE_APP_API_URL}/api/attendee/sms/create`,
-      //   {
-      //     phoneNumber: "+69554376617",
-      //   }
-      // );
 
       setQRCode(res.data._id);
       toggleModalOpen();
@@ -180,6 +179,13 @@ const EventRegistrationPage = () => {
             <label>Year level:</label>
             <span className="tab-input">{userInfo?.yearLevel}</span>
           </div>
+          <div className="form-container-itemlist">
+            <input
+              placeholder="Phone Number"
+              className="tab-input"
+              onChange={(e) => setPhoneNumber(e.target.value)}
+            />
+          </div>
           <button onClick={handleSubmit}>Confirm</button>
         </div>
       );
@@ -246,6 +252,13 @@ const EventRegistrationPage = () => {
               name="attendeeRelationship"
               value={parentInfo.attendeeRelationship}
               onChange={onChangeEventHandler}
+            />
+          </div>
+          <div className="form-container-itemlist">
+            <input
+              placeholder="Phone Number"
+              className="tab-input"
+              onChange={(e) => setPhoneNumber(e.target.value)}
             />
           </div>
           <button onClick={handleSubmit}>Confirm</button>

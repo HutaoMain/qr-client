@@ -4,8 +4,7 @@
   align-items: center;
 
   height: 100vh;
-  width: 100vw;
-  background-color: #f0f0f0;
+  width: 100%;
 }
 
 .registration-header {
@@ -69,6 +68,7 @@ h3 {
 .registration-button-group {
   display: flex;
   justify-content: space-between;
+  margin-bottom: 6%;
 }
 
 .registration-button-group button {
